@@ -1,6 +1,6 @@
 {
   "name": "aws-automation-utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Some Helpers to automate certain AWS tasks such as restoring an RDS instance or updating ElasticBeanstalk environment settings",
   "main": "index.js",
   "repository": {
@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/camilin87/aws-automation-utils#readme",
   "dependencies": {
-    "aws-sdk": "^2.409.0",
-    "rfr": "^1.2.3"
+    "aws-sdk": "^2.409.0"
   }
 }
