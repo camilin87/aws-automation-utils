@@ -1,7 +1,13 @@
 # aws-automation-utils  
 Some Helpers to automate certain AWS tasks such as restoring an RDS instance or updating ElasticBeanstalk environment settings
 
-### Create fresh backup of a database  
+## Usage  
+
+```bash
+npm i aws-automation-utils --save
+```
+
+## Create fresh backup of a database  
 
 Spawns a new instance with the desired parameters. It waits for the instance to be available. The new instance has a unique name based on the current date and time of the day.  
 
@@ -30,7 +36,7 @@ const newDatabaseName = await rdsService.restore({
 console.log(`Created database: ${newDatabaseName}`);
 ```
 
-### Change the Master Password of a database  
+## Change the Master Password of a database  
 
 Changes the master password of a database. It waits for the instance to be available.  
 
@@ -45,7 +51,7 @@ await rdsService.updatePassword({
 });
 ```
 
-### Delete old Development databases  
+## Delete old Development databases  
 
 Deletes old database instances based on their name. As long as they start with the specified prefix.  
 
@@ -58,7 +64,7 @@ await rdsService.deleteOlder({
 });
 ```
 
-### Update an Elastic Beanstalk environment variable  
+## Update an Elastic Beanstalk environment variable  
 
 Sets an environment value in the specied Elastic Beanstalk environment. It waits for the environment to be ready.  
 
