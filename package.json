@@ -1,11 +1,11 @@
 {
-  "name": "aws-utils",
+  "name": "aws-automation-utils",
   "version": "0.1.0",
   "description": "Some Helpers to automate certain AWS tasks such as restoring an RDS instance or updating ElasticBeanstalk environment settings",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/camilin87/aws-utils.git"
+    "url": "git+https://github.com/camilin87/aws-automation-utils.git"
   },
   "keywords": [
     "aws",
@@ -17,9 +17,9 @@
   "author": "@camilin87",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/camilin87/aws-utils/issues"
+    "url": "https://github.com/camilin87/aws-automation-utils/issues"
   },
-  "homepage": "https://github.com/camilin87/aws-utils#readme",
+  "homepage": "https://github.com/camilin87/aws-automation-utils#readme",
   "dependencies": {
     "aws-sdk": "^2.409.0",
     "rfr": "^1.2.3"
