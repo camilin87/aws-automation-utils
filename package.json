@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/camilin87/aws-utils#readme",
   "dependencies": {
+    "aws-sdk": "^2.409.0",
     "rfr": "^1.2.3"
   }
 }
