@@ -79,3 +79,17 @@ await elasticBeanstalkHelper.updateEnvironment({
   timeout: 600
 });
 ```
+
+## Set a Lambda Environment Variable  
+
+Sets an environment value in the specified lambda function. It creates a new setting if the setting does not exist.  
+
+```js
+const lambda = require('aws-automation-utils').lambda
+await lambda.updateEnvironment({
+    region: 'us-east-2',
+    functionName: 'function1',
+    key: 'TEST',
+    value: 'MAYBE'
+})
+```
