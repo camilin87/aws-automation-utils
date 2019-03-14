@@ -85,7 +85,7 @@ await elasticBeanstalkHelper.updateEnvironment({
 Sets an environment value in the specified lambda function. It creates a new setting if the setting does not exist.  
 
 ```js
-const lambda = require('aws-automation-utils').lambda
+const lambda = require('aws-automation-utils').lambda;
 await lambda.updateEnvironment({
     region: 'us-east-2',
     functionName: 'function1',
@@ -99,7 +99,7 @@ await lambda.updateEnvironment({
 Disables all the event source mappings of the specified lambda function.  
 
 ```js
-const lambda = require('aws-automation-utils').lambda
+const lambda = require('aws-automation-utils').lambda;
 const statusUpdateResult = await lambda.updateStatus({
     region: 'us-east-2',
     functionName: 'function1',
@@ -112,7 +112,7 @@ const statusUpdateResult = await lambda.updateStatus({
 Enables all the event source mappings of the specified lambda function.  
 
 ```js
-const lambda = require('aws-automation-utils').lambda
+const lambda = require('aws-automation-utils').lambda;
 const statusUpdateResult = await lambda.updateStatus({
     region: 'us-east-2',
     functionName: 'function1',
@@ -125,7 +125,7 @@ const statusUpdateResult = await lambda.updateStatus({
 Sets the concurrency limit of a lambda to the specified value. Disables the limit when `0` is specified.  
 
 ```js
-const lambda = require('aws-automation-utils').lambda
+const lambda = require('aws-automation-utils').lambda;
 const statusUpdateResult = await lambda.updateConcurrency({
     region: 'us-east-2',
     functionName: 'function1',
@@ -136,7 +136,7 @@ const statusUpdateResult = await lambda.updateConcurrency({
 ## Disable the concurrency limit of a lambda  
 
 ```js
-const lambda = require('aws-automation-utils').lambda
+const lambda = require('aws-automation-utils').lambda;
 const statusUpdateResult = await lambda.updateConcurrency({
     region: 'us-east-2',
     functionName: 'function1'
