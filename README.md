@@ -66,7 +66,7 @@ await rdsService.deleteOlder({
 
 ## Update an Elastic Beanstalk environment variable  
 
-Sets an environment value in the specied Elastic Beanstalk environment. It waits for the environment to be ready.  
+Sets an environment value in the specified Elastic Beanstalk environment. It waits for the environment to be ready.  
 
 ```js
 const elasticBeanstalkHelper = require('aws-automation-utils').elasticBeanstalk;
