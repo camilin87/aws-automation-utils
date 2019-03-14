@@ -119,3 +119,27 @@ const statusUpdateResult = await lambda.updateStatus({
     enabled: true
 });
 ```
+
+## Change the concurrency limit of a lambda  
+
+Sets the concurrency limit of a lambda to the specified value. Disables the limit when `0` is specified.  
+
+```js
+const lambda = require('aws-automation-utils').lambda
+const statusUpdateResult = await lambda.updateConcurrency({
+    region: 'us-east-2',
+    functionName: 'function1',
+    concurrency: 10
+});
+```
+
+## Disable the concurrency limit of a lambda  
+
+```js
+const lambda = require('aws-automation-utils').lambda
+const statusUpdateResult = await lambda.updateConcurrency({
+    region: 'us-east-2',
+    functionName: 'function1'
+});
+```
+
