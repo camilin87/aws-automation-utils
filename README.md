@@ -91,5 +91,31 @@ await lambda.updateEnvironment({
     functionName: 'function1',
     key: 'TEST',
     value: 'MAYBE'
-})
+});
+```
+
+## Disable a lambda  
+
+Disables all the event source mappings of the specified lambda function.  
+
+```js
+const lambda = require('aws-automation-utils').lambda
+const statusUpdateResult = await lambda.updateStatus({
+    region: 'us-east-2',
+    functionName: 'function1',
+    enabled: false
+});
+```
+
+## Enable a lambda  
+
+Enables all the event source mappings of the specified lambda function.  
+
+```js
+const lambda = require('aws-automation-utils').lambda
+const statusUpdateResult = await lambda.updateStatus({
+    region: 'us-east-2',
+    functionName: 'function1',
+    enabled: true
+});
 ```
