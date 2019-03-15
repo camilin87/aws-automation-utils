@@ -134,4 +134,65 @@ describe('lambda', function(){
             ])
         })
     })
+
+    describe('updateConcurrency', function(){
+        describe('removes limit', function(){
+            var removeConcurrencyLimiLastInvocation = null
+
+            beforeEach(function(){
+                removeConcurrencyLimiLastInvocation = null
+
+                lambdaHelperMock.removeConcurrencyLimit = async function(functionName,){
+                    removeConcurrencyLimiLastInvocation = {
+                        functionName: functionName
+                    }
+                    return {}
+                }
+            })
+
+            it ('when no concurrency is specified', async function(){
+                const result = await lambda.updateConcurrency({
+                    region: 'far-west',
+                    functionName: 'cpuLoad'
+                })
+
+                expect(result).toBe(true)
+                expect(lambdaHelperMock.region).toEqual('far-west')
+                expect(removeConcurrencyLimiLastInvocation).toEqual({
+                    functionName: 'cpuLoad'
+                })
+            })
+        })
+
+        describe('updates limit', function(){
+            var configureConcurrencyLimitLastInvocation = null
+
+            beforeEach(function(){
+                configureConcurrencyLimitLastInvocation = null
+
+                lambdaHelperMock.configureConcurrencyLimit = async function(functionName, concurrency){
+                    configureConcurrencyLimitLastInvocation = {
+                        functionName: functionName,
+                        concurrency: concurrency
+                    }
+                    return {}
+                }
+            })
+
+            it ('when concurrency is specified', async function(){
+                const result = await lambda.updateConcurrency({
+                    region: 'far-west',
+                    functionName: 'cpuLoad',
+                    concurrency: 16
+                })
+
+                expect(result).toBe(true)
+                expect(lambdaHelperMock.region).toEqual('far-west')
+                expect(configureConcurrencyLimitLastInvocation).toEqual({
+                    functionName: 'cpuLoad',
+                    concurrency: 16
+                })
+            })
+        })
+    })
 })
