@@ -1,6 +1,6 @@
 {
   "name": "aws-automation-utils",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Some Helpers to automate certain AWS tasks such as restoring an RDS instance or updating ElasticBeanstalk environment settings",
   "main": "index.js",
   "repository": {
