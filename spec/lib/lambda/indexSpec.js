@@ -74,16 +74,16 @@ describe('lambda', function(){
 
     describe('updateStatus', function(){
         var seededEventSourceMappings = null
-        var readEventSourceMappingsLastCall = null
+        var readEventSourceMappingsLastInvocation = null
         var updateEventSourceMappingInvocations = null
 
         beforeEach(function(){
             seededEventSourceMappings = []
             updateEventSourceMappingInvocations = []
-            readEventSourceMappingsLastCall = null
+            readEventSourceMappingsLastInvocation = null
 
             lambdaHelperMock.readEventSourceMappings = async function(functionName) {
-                readEventSourceMappingsLastCall = {
+                readEventSourceMappingsLastInvocation = {
                     functionName: functionName
                 }
                 return seededEventSourceMappings
@@ -112,7 +112,7 @@ describe('lambda', function(){
 
             expect(result).toBe(true)
             expect(lambdaHelperMock.region).toEqual('my-other-region')
-            expect(readEventSourceMappingsLastCall).toEqual({
+            expect(readEventSourceMappingsLastInvocation).toEqual({
                 functionName: 'run-fast-fn'
             })
             expect(updateEventSourceMappingInvocations).toEqual([
