@@ -71,4 +71,67 @@ describe('lambda', function(){
             })
         })
     })
+
+    describe('updateStatus', function(){
+        var seededEventSourceMappings = null
+        var readEventSourceMappingsLastCall = null
+        var updateEventSourceMappingInvocations = null
+
+        beforeEach(function(){
+            seededEventSourceMappings = []
+            updateEventSourceMappingInvocations = []
+            readEventSourceMappingsLastCall = null
+
+            lambdaHelperMock.readEventSourceMappings = async function(functionName) {
+                readEventSourceMappingsLastCall = {
+                    functionName: functionName
+                }
+                return seededEventSourceMappings
+            }
+
+            lambdaHelperMock.updateEventSourceMapping = async function(functionName, uuid, enabled){
+                updateEventSourceMappingInvocations.push({
+                    functionName: functionName,
+                    uuid: uuid,
+                    enabled: enabled
+                })
+                return {}
+            }
+        })
+
+        it ('updates each mapping id', async function(){
+            seededEventSourceMappings.push('111')
+            seededEventSourceMappings.push('222')
+            seededEventSourceMappings.push('333')
+
+            const result = await lambda.updateStatus({
+                region: 'my-other-region',
+                functionName: 'run-fast-fn',
+                enabled: true
+            })
+
+            expect(result).toBe(true)
+            expect(lambdaHelperMock.region).toEqual('my-other-region')
+            expect(readEventSourceMappingsLastCall).toEqual({
+                functionName: 'run-fast-fn'
+            })
+            expect(updateEventSourceMappingInvocations).toEqual([
+                {
+                    functionName: 'run-fast-fn',
+                    uuid: '111',
+                    enabled: true
+                },
+                {
+                    functionName: 'run-fast-fn',
+                    uuid: '222',
+                    enabled: true
+                },
+                {
+                    functionName: 'run-fast-fn',
+                    uuid: '333',
+                    enabled: true
+                }
+            ])
+        })
+    })
 })
