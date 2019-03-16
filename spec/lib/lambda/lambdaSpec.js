@@ -111,6 +111,9 @@ describe('lambda', function(){
 
             expect(result).toBe(true)
             expect(lambdaHelperMock.region).toEqual('my-other-region')
+            expect(readConfigurationLastInvocation).toEqual({
+                functionName: 'run-fast-fn'
+            })
             expect(readEventSourceMappingsLastInvocation).toEqual({
                 functionName: 'run-fast-fn'
             })
@@ -157,6 +160,9 @@ describe('lambda', function(){
 
                 expect(result).toBe(true)
                 expect(lambdaHelperMock.region).toEqual('far-west')
+                expect(readConfigurationLastInvocation).toEqual({
+                    functionName: 'cpuLoad'
+                })
                 expect(removeConcurrencyLimiLastInvocation).toEqual({
                     functionName: 'cpuLoad'
                 })
@@ -187,6 +193,9 @@ describe('lambda', function(){
 
                 expect(result).toBe(true)
                 expect(lambdaHelperMock.region).toEqual('far-west')
+                expect(readConfigurationLastInvocation).toEqual({
+                    functionName: 'cpuLoad'
+                })
                 expect(configureConcurrencyLimitLastInvocation).toEqual({
                     functionName: 'cpuLoad',
                     concurrency: 16
