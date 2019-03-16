@@ -2,27 +2,14 @@ const rfr = require('rfr')
 const lambdaModule = rfr('lib/lambda')
 
 describe('lambda', function(){
+    var readConfigurationLastInvocation = null
     var lambdaHelperMock = null
     var lambda = null
 
     beforeEach(function(){
-        lambdaHelperMock = {}
-        var lambdaHelperFnMock = function(region) {
-            lambdaHelperMock.region = region
-            return lambdaHelperMock
-        }
-        lambda = lambdaModule(lambdaHelperFnMock)
-    })
-
-    describe('updateEnvironment', function(){
-        var readConfigurationLastInvocation = null
-        var updateEnvironmentLastInvocation = null
-
-        beforeEach(function() {
-            readConfigurationLastInvocation = []
-            updateEnvironmentLastInvocation = []
-
-            lambdaHelperMock.readConfiguration = async function(functionName){
+        readConfigurationLastInvocation = []
+        lambdaHelperMock = {
+             readConfiguration: async function(functionName){
                 readConfigurationLastInvocation = {
                     functionName: functionName
                 }
@@ -36,6 +23,19 @@ describe('lambda', function(){
                     }
                 }
             }
+        }
+        var lambdaHelperFnMock = function(region) {
+            lambdaHelperMock.region = region
+            return lambdaHelperMock
+        }
+        lambda = lambdaModule(lambdaHelperFnMock)
+    })
+
+    describe('updateEnvironment', function(){
+        var updateEnvironmentLastInvocation = null
+
+        beforeEach(function() {
+            updateEnvironmentLastInvocation = []
 
             lambdaHelperMock.updateEnvironment = async function(functionName, environment){
                 updateEnvironmentLastInvocation = {
