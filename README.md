@@ -1,4 +1,7 @@
 # aws-automation-utils  
+
+[![Build Status](https://travis-ci.org/camilin87/aws-automation-utils.svg?branch=master)](https://travis-ci.org/camilin87/aws-automation-utils)
+
 Some Helpers to automate certain AWS tasks such as restoring an RDS instance or updating ElasticBeanstalk environment settings
 
 ## Usage  
