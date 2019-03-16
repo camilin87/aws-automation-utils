@@ -5,8 +5,11 @@ describe('rds', function(){
     var rdsHelperMock = null
     var instanceStatusMock = null
     var rds = null
+    var mockInvocations = null
 
     beforeEach(function(){
+        mockInvocations = []
+
         const nameGeneratorFnMock = function () {
             return {
                 create: (dbPrefix) => `db-${dbPrefix}`
@@ -19,7 +22,24 @@ describe('rds', function(){
             return rdsHelperMock
         }
 
-        instanceStatusMock = {}
+        instanceStatusMock = {
+            ensureAvailable: async function(dbIdentifier, timeout){
+                mockInvocations.push({
+                    id: 'ensureAvailable',
+                    dbIdentifier: dbIdentifier,
+                    timeout: timeout
+                })
+                return {}
+            },
+            ensureDoesNotExist: async function(dbIdentifier) {
+                mockInvocations.push({
+                    id: 'ensureDoesNotExist',
+                    dbIdentifier: dbIdentifier
+                })
+                return {}
+            }
+        }
+
         const instanceStatusFnMock = function(rdsHelper){
             instanceStatusMock.rdsHelper = rdsHelper
             return instanceStatusMock
@@ -29,28 +49,7 @@ describe('rds', function(){
     })
 
     describe('restore', function(){
-        var mockInvocations = null
-
         beforeEach(function(){
-            mockInvocations = []
-
-            instanceStatusMock.ensureAvailable = async function(dbIdentifier, timeout){
-                mockInvocations.push({
-                    id: 'ensureAvailable',
-                    dbIdentifier: dbIdentifier,
-                    timeout: timeout
-                })
-                return {}
-            }
-
-            instanceStatusMock.ensureDoesNotExist = async function(dbIdentifier) {
-                mockInvocations.push({
-                    id: 'ensureDoesNotExist',
-                    dbIdentifier: dbIdentifier
-                })
-                return {}
-            }
-
             rdsHelperMock.readInstanceInfo = async function(dbIdentifier){
                 mockInvocations.push({
                     id: 'readInstanceInfo',
@@ -91,6 +90,7 @@ describe('rds', function(){
         it ('restores the most recent backup', async function(){
             const result = await rds.restore({
                 enabled: true,
+                region: 'indonesia',
                 timeout: 14,
                 prod: {
                     dbIdentifier: 'my-prod-db'
@@ -106,6 +106,9 @@ describe('rds', function(){
                 }
             })
 
+            expect(result).toBe('db-dev-db')
+            expect(rdsHelperMock.region).toBe('indonesia')
+            expect(instanceStatusMock.rdsHelper).toBe(rdsHelperMock)
             expect(mockInvocations).toEqual([
                 { id: 'readInstanceInfo', dbIdentifier: 'my-prod-db' },
                 { id: 'ensureAvailable', dbIdentifier: 'my-prod-db', timeout: 14 },
@@ -126,6 +129,43 @@ describe('rds', function(){
                 }},
                 { id: 'ensureAvailable', dbIdentifier: 'db-dev-db', timeout: 14 },
                 { id: 'readInstanceInfo', dbIdentifier: 'db-dev-db' }
+            ])
+        })
+    })
+
+    describe('updatePassword', function(){
+        beforeEach(function(){
+            rdsHelperMock.setMasterPassword = async function(dbIdentifier, password){
+                mockInvocations.push({
+                    id: 'setMasterPassword',
+                    dbIdentifier: dbIdentifier,
+                    password: password
+                })
+                return {}
+            }
+        })
+
+        it ('returns false when disabled in config', async function(){
+            const result = await rds.updatePassword({enabled: false})
+            expect(result).toBe(false)
+        })
+
+        it ('updates the password', async function (){
+            const result = await rds.updatePassword({
+                enabled: true,
+                region: 'malasya',
+                dbIdentifier: 'my-super-db',
+                timeout: 25,
+                password: 'secret1'
+            })
+
+            expect(result).toBe(true)
+            expect(rdsHelperMock.region).toBe('malasya')
+            expect(instanceStatusMock.rdsHelper).toBe(rdsHelperMock)
+            expect(mockInvocations).toEqual([
+                { id: 'ensureAvailable', dbIdentifier: 'my-super-db', timeout: 25 },
+                { id: 'setMasterPassword', dbIdentifier: 'my-super-db', password: 'secret1' },
+                { id: 'ensureAvailable', dbIdentifier: 'my-super-db', timeout: 25 }
             ])
         })
     })
