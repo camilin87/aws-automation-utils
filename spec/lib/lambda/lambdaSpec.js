@@ -2,13 +2,12 @@ const rfr = require('rfr')
 const lambdaModule = rfr('lib/lambda')
 
 describe('lambda', function(){
-    var lambdaHelperFnMock = null
     var lambdaHelperMock = null
     var lambda = null
 
     beforeEach(function(){
         lambdaHelperMock = {}
-        lambdaHelperFnMock = function(region) {
+        var lambdaHelperFnMock = function(region) {
             lambdaHelperMock.region = region
             return lambdaHelperMock
         }
