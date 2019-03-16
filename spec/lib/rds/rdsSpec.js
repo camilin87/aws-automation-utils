@@ -169,4 +169,52 @@ describe('rds', function(){
             ])
         })
     })
+
+    describe('deleteOlder', function(){
+        beforeEach(function(){
+            rdsHelperMock.readAllInstanceIdentifiers = async function(databasePrefix) {
+                mockInvocations.push({
+                    id: 'readAllInstanceIdentifiers',
+                    databasePrefix: databasePrefix
+                })
+
+                return [
+                    `${databasePrefix}-1`,
+                    `${databasePrefix}-2`,
+                    `${databasePrefix}-3`,
+                    `${databasePrefix}-4`
+                ]
+            }
+
+            rdsHelperMock.deleteInstance = async function(dbIdentifier) {
+                mockInvocations.push({
+                    id: 'deleteInstance',
+                    dbIdentifier: dbIdentifier
+                })
+                return {}
+            }
+        })
+
+        it ('returns false when disabled in config', async function(){
+            const result = await rds.deleteOlder({enabled: false})
+            expect(result).toBe(false)
+        })
+
+        it ('deletes the older instances', async function(){
+            const result = await rds.deleteOlder({
+                enabled: true,
+                region: 'japan-1',
+                databasePrefix: 'dev'
+            })
+
+            expect(result).toBe(true)
+            expect(rdsHelperMock.region).toBe('japan-1')
+            expect(mockInvocations).toEqual([
+                { id: 'readAllInstanceIdentifiers', databasePrefix: 'dev' },
+                { id: 'deleteInstance', dbIdentifier: 'dev-3' },
+                { id: 'deleteInstance', dbIdentifier: 'dev-2' },
+                { id: 'deleteInstance', dbIdentifier: 'dev-1' }
+            ])
+        })
+    })
 })
