@@ -131,6 +131,45 @@ describe('rds', function(){
                 { id: 'readInstanceInfo', dbIdentifier: 'db-dev-db' }
             ])
         })
+
+        it ('backup restore can override the engine', async function(){
+            const result = await rds.restore({
+                enabled: true,
+                region: 'indonesia',
+                timeout: 14,
+                prod: {
+                    dbIdentifier: 'my-prod-db'
+                },
+                dev: {
+                    databasePrefix: 'dev-db',
+                    availabilityZone: 'us-aaa',
+                    instanceClass: 'large',
+                    multiAZ: false,
+                    publiclyAccessible: true,
+                    securityGroups: ['sg-123abc', 'sg-gggg'],
+                    tags: ['tag1', 'tag2'],
+                    engine: 'sql-free'
+                }
+            })
+
+            expect(result).toBe('db-dev-db')
+            expect(mockInvocations[4]).toEqual({
+                id: 'restoreSnapshot',
+                info: {
+                    DBInstanceIdentifier: 'db-dev-db',
+                    DBSnapshotIdentifier: 'snp-my-prod-db',
+                    AvailabilityZone: 'us-aaa',
+                    DBInstanceClass: 'large',
+                    Engine: 'sql-free',
+                    LicenseModel: 'included',
+                    MultiAZ: false,
+                    PubliclyAccessible: true,
+                    StorageType: 'SSD',
+                    VpcSecurityGroupIds: ['sg-123abc', 'sg-gggg'],
+                    Tags: ['tag1', 'tag2']
+                }
+            })
+        })
     })
 
     describe('updatePassword', function(){
